@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kr.co.jhta.mapper.DepartmentDao">
+
+	<select id="getDepartments" resultType="kr.co.jhta.vo.Department">
+		select 
+			department_id 		as id,
+			department_name		as name,
+			manager_id			as "manager.id",
+			location_id			as loc
+		from
+			departments
+		order by
+			department_id asc 
+	</select>
+	
+	<select id="getdepartmentById" parameterType="int" resultType="kr.co.jhta.vo.Department">
+		select
+	         D.department_id      	as id,
+	         D.department_name      as name,
+	         D.manager_id         	as "manager.id",
+	         M.first_name         	as "manager.firstName",
+	         M.last_name            as "manager.lastName",
+	         D.location_id         	as loc
+   	  	from
+         	 departments D, employees M
+    	where
+        	 D.manager_id = M.employee_id(+)
+        	 and D.department_id = #{value}
+	</select>
+</mapper>
